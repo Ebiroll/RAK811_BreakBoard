@@ -18,6 +18,8 @@ pio run
 # To flash firmware with  stm32flash
 In stm32flash_src there is code to flash the device
     ./stm32flash -w .pioenvs/rak811/firmware.bin  /dev/ttyUSB0
+To reset and start after download, try
+    ./stm32flash  -w .pioenvs/rak811/firmware.bin -v -g  0x0  /dev/ttyUSB0
 
 # Start
 It does not apear to tun correctly. :-(
