@@ -7,8 +7,11 @@ It compiles and flashes but when I got blinky to run
 the  speed was way to low,
 
 # Add new board definition
-Edit rak811.json as the linker script is an absolute path.
-cp rak811.json .platformio/platforms/ststm32/boards/rak811.json
+
+The earlier versions of the board only had 16K ram so stm32l15xx6.ld is default as linker script.
+If you want to use the full 32K ram you can change this line before copy
+        "ldscript": "/home/olof/rak/STM32L151XBA_FLASH.ld"
+cp rak811.json ~/.platformio/platforms/ststm32/boards/rak811.json
 
 
 # compile
