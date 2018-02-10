@@ -1,0 +1,32 @@
+{
+    "build": {
+        "core": "stm32",
+        "cpu": "cortex-m3",
+        "extra_flags": "-DSTM32L151xB -DSTM32L151CBU6",
+        "hwids": [
+            [
+                "0x0429",
+                "0x0003"
+            ],
+            [
+                "0x0429",
+                "0x0004"
+            ]
+        ],
+        "f_cpu": "32768000L",
+        "mcu": "stm32l151cbu6",
+        "variant": "stm32l151xba",
+        "ldscript": "/home/olof/rak/STM32L151XBA_FLASH.ld"
+    },
+    "frameworks": [
+        "mbed",
+        "cmsis"
+    ],
+    "name": "Rak811",
+    "upload": {
+        "maximum_ram_size": 32768,
+        "maximum_size": 128000
+    },
+    "url": "http://www.rakwireless.com/en/download/RAK811/Hardware%20Design",
+    "vendor": "RAK"
+}
