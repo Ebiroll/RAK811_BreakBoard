@@ -1,7 +1,7 @@
 # RAK811 breakout board
 
 Code from here 
-https://github.com/Ebiroll/RAK811_BreakBoard.git
+https://github.com/RAKWireless/RAK811_BreakBoard
 then adapted to platformio
 
 # Add new board definition
