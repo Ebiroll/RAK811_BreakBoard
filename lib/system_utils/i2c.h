@@ -15,6 +15,9 @@ Maintainer: Miguel Luis and Gregory Cristian
 #ifndef __I2C_H__
 #define __I2C_H__
 
+#include "stm32l1xx.h"
+#include "stm32l1xx_hal.h"
+
 /*!
  * I2C object type definition
  */
@@ -23,7 +26,7 @@ typedef struct
     I2C_HandleTypeDef I2c;
     Gpio_t Scl;
     Gpio_t Sda;
-}I2c_t;
+} I2c_t;
 
 /*!
  * \brief Initializes the I2C object and MCU peripheral
