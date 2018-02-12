@@ -3,6 +3,15 @@
 #include "WakeUp.h"
 //#include "rtc_api.h"
 #include "stm32l1xx_hal_rtc.h"
+#include "stm32l1xx_hal_pwr.h"
+
+/*
+https://community.st.com/thread/45343-how-dose-stm32l151ccu6-enter-stop-mode
+// Enter Stop Mode 
+HAL_SuspendTick();
+HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+HAL_ResumeTick();
+*/
 
 #define BYTE2BCD(byte)      ((byte % 10) | ((byte / 10) << 4))
 
