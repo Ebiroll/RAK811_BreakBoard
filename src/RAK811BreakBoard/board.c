@@ -282,6 +282,7 @@ uint8_t BoardGetBatteryLevel( void )
 
 static void BoardUnusedIoInit( void )
 {
+    Gpio_t ioPin;
 
 #if defined( USE_DEBUGGER )
     HAL_DBGMCU_EnableDBGStopMode( );
