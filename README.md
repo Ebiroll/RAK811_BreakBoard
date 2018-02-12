@@ -12,13 +12,14 @@ If you want to use the full 32K ram you can change this line before copy
 
     cp rak811.json ~/.platformio/platforms/ststm32/boards/rak811.json
 
-If you done have this directory, .platformio/platforms/ststm32
-try, 
+If you do not have this directory, .platformio/platforms/ststm32 try, 
+    
     pio platform install ststm32
 
 
 # compile
-pio run
+    
+    pio run
 
 
 # To flash firmware with  stm32flash
@@ -29,6 +30,7 @@ To reset and start after download, try
 
 # Start
 Now it starts and outputs debug information on UART,
+
     Move Detected INT1 src:0x48
     [Debug]: tempr: 35 Bat: 3988mv
     [Debug]: ACC X:FF00 Y:0000 Z:FF00
