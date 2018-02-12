@@ -3,6 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
+                "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/wakeup",
                 "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/crypto",
                 "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/radio",
                 "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/radio/sx1276",
@@ -51,6 +52,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
+                    "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/wakeup",
                     "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/crypto",
                     "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/radio",
                     "d:/msys2/home/Olof/rak/RAK811_BreakBoard/lib/radio/sx1276",
