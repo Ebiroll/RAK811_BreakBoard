@@ -11,9 +11,10 @@ If you want to use the full 32K ram you can change this line before copy
         "ldscript": "/home/olof/rak/STM32L151XBA_FLASH.ld"
 
 If you use, platformio ide, press
-1) Home button
-2) Platforms/ST STM32 button
-[[https://raw.githubusercontent.com/Ebiroll/RAK811_BreakBoard/master/instruction.png]]
+
+    1) Home button
+    2) Platforms/ST STM32 button
+
 ![instruction](instruction.png)
 
 
