@@ -166,7 +166,7 @@ int i2c_bme280_begin() {
    settings.humidOverSample = 1;
 
 
-   I2cInit(&BME280I2C, I2C_SCL, I2C_SDA );
+   I2cInit(&BME280I2C, I2C_SCL,I2C_SDA  );
 
 
 
@@ -188,7 +188,7 @@ int i2c_bme280_begin() {
 
     //i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     //i2c_master_start(cmd);
-	I2cWrite(&BME280I2C,BME280_I2C_ADDRESS2,BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG,0);
+	I2cWrite(&BME280I2C, ( BME280_I2C_ADDRESS2 << 1 ) | WRITE_BIT,BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG,0);
     //i2c_master_write_byte(cmd, ( BME280_I2C_ADDRESS2 << 1 ) | WRITE_BIT, ACK_CHECK_EN);
     //i2c_master_write_byte(cmd,  BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG, ACK_CHECK_EN);
     //i2c_master_stop(cmd);
@@ -198,7 +198,7 @@ int i2c_bme280_begin() {
     //vTaskDelay(200 / portTICK_RATE_MS);
 	HAL_Delay(200);
 
-	I2cReadBuffer(&BME280I2C,BME280_I2C_ADDRESS2,BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG, a_data_u8,BME280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH);
+	I2cReadBuffer(&BME280I2C, BME280_I2C_ADDRESS2 << 1 | READ_BIT,BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG, a_data_u8,BME280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH);
     //cmd = i2c_cmd_link_create();
     //i2c_master_start(cmd);
     //i2c_master_write_byte(cmd, BME280_I2C_ADDRESS2 << 1 | READ_BIT, ACK_CHECK_EN);
@@ -269,7 +269,7 @@ int i2c_bme280_begin() {
     //i2c_master_stop(cmd);
     //ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_RATE_MS);
     //i2c_cmd_link_delete(cmd);
-    I2cWrite(&BME280I2C,BME280_I2C_ADDRESS2,BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG,0);
+    I2cWrite(&BME280I2C, ( BME280_I2C_ADDRESS2 << 1 ) | WRITE_BIT,BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG,0);
 
 
     //vTaskDelay(200 / portTICK_RATE_MS);
@@ -284,7 +284,7 @@ int i2c_bme280_begin() {
     //i2c_master_stop(cmd);
     //ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_RATE_MS);
     //i2c_cmd_link_delete(cmd);
-    I2cReadBuffer(&BME280I2C,BME280_I2C_ADDRESS2,BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG, a_data_u8,BME280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH);
+    I2cReadBuffer(&BME280I2C, BME280_I2C_ADDRESS2 << 1 | READ_BIT,BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG, a_data_u8,BME280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH);
 
 
     calib_data->dig_H2 = (s16)(((
@@ -395,9 +395,21 @@ void i2c_bme280_force_readings( void )
     // Should be ms rather than us
     //vTaskDelay(t_measure_us / portTICK_RATE_MS);
 	// TODO, Sleep / 1000
-	HAL_Delay(t_measure_us);
+	HAL_Delay(t_measure_us/100);
 
 	//delay((t_measure_us / 1000) + 1);	// round up
+}
+
+
+void i2c_bme280_scan(uint8_t reg) {
+    uint8_t data=0;
+	int times=0;
+    while (times++<127) {
+		I2cRead(&BME280I2C,times << 1  | READ_BIT ,reg,&data);
+        printf("result(%d) %x\r\n",times,data);
+		
+		GpioToggle(&Led2);
+	}
 }
 
 uint8_t i2c_bme280_read_register(uint8_t reg)
@@ -428,7 +440,7 @@ uint8_t i2c_bme280_read_register(uint8_t reg)
     ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_RATE_MS);
     i2c_cmd_link_delete(cmd);
 */
-    I2cRead(&BME280I2C,BME280_I2C_ADDRESS2,reg,&data);
+    I2cRead(&BME280I2C,BME280_I2C_ADDRESS2 << 1 | READ_BIT,reg,&data);
 
     return data;
 }
@@ -436,7 +448,7 @@ uint8_t i2c_bme280_read_register(uint8_t reg)
 int i2c_bme280_write_register(uint8_t reg,uint8_t value)
 {
 
-    I2cWrite(&BME280I2C,BME280_I2C_ADDRESS2,reg,value);
+    I2cWrite(&BME280I2C, BME280_I2C_ADDRESS2 << 1 | WRITE_BIT,reg,value);
 	/* 
     i2c_port_t i2c_num = I2C_MASTER_NUM;
 
