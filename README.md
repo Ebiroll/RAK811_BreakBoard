@@ -13,7 +13,7 @@ If you want to use the full 32K ram you can change this line before copy
 If you use, platformio ide, press
 
     1) Home button
-    2) Platforms/ST STM32 button
+    2) Platforms/ST STM32 reveal button
 
 ![instruction](instruction.png)
 
