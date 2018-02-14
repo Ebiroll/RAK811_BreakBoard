@@ -46,6 +46,21 @@ Now it starts and outputs debug information on UART,
     [Debug]: ACC X:FF00 Y:0000 Z:FF00
     GpsGetLatestGpsPositionDouble ret = 0
 
+# MCU information
+
+    Interface serial_posix: 57600 8E1
+    Version      : 0x31
+    Option 1     : 0x00
+    Option 2     : 0x00
+    Device ID    : 0x0429 (STM32L1xxx6(8/B)A)
+    - RAM        : 32KiB  (4096b reserved by bootloader)
+    - Flash      : 128KiB (size first sector: 16x256)
+    - Option RAM : 32b
+    - System RAM : 4KiB
+
+http://www.st.com/content/ccc/resource/technical/document/reference_manual/cc/f9/93/b2/f0/82/42/57/CD00240193.pdf/files/CD00240193.pdf/jcr:content/translations/en.CD00240193.pdf
+
+
 
 # Startup code
 The startup code should have been this,
