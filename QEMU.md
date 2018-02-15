@@ -113,7 +113,7 @@ It would be nice to get debug printouts, need to investigate
 
 
 # From technical manual
-'''
+```
 0xA000 0000 - 0xA000 0FFF FSMC
 0x5006 0000 - 0x5006 03FF AES Section 23.12.13: AES
 0x4002 6400 - 0x4002 67FF DMA2 Section 11.4.7: DMA register
@@ -162,12 +162,15 @@ map on page 694 0x4000 5400 - 0x4000 57FF I2C1
 0x4000 0800 - 0x4000 0BFF TIM4
 0x4000 0400 - 0x4000 07FF TIM3
 0x4000 0000 - 0x4000 03FF TIM2
-'''
+```
 
 
 # Analysis
 
-    Stuck in stm3211xx_hal_rcc.c
+Next step is getting the UART emulation to output data
+
+
+    Now we dont get stuck in stm3211xx_hal_rcc.c
     while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)              
 
     rbit   r2, r3 
@@ -184,7 +187,7 @@ RCC_FLAG_LSERDY=#200
     (gdb)
  
 
-In texhnical manual, 
+In technical manual, 
     0x40023800 - 0x40023BFF    RCC
 
  

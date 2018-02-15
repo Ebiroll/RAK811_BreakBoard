@@ -49,7 +49,7 @@ Now it starts and outputs debug information on UART,
 
 # Qemu
 I have made a simple qemu board emulation and its possible to start and run in qemu,
-Read more here [!QEMU.md]
+Read more here [running in qemu](./QEMU.md)
 
 # MCU information
 
