@@ -46,6 +46,11 @@ Now it starts and outputs debug information on UART,
     [Debug]: ACC X:FF00 Y:0000 Z:FF00
     GpsGetLatestGpsPositionDouble ret = 0
 
+
+# Qemu
+I have made a simple qemu board emulation and its possible to start and run in qemu,
+Read more here [!QEMU.md]
+
 # MCU information
 
     Interface serial_posix: 57600 8E1

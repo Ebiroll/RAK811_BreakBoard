@@ -1,12 +1,19 @@
 # Running the RAK board in qeum
 Clone and build this
 https://github.com/Ebiroll/qemu-xtensa-esp32
+Instructions are available in readme.md
 
 
-./qemu-system-arm   -serial file:uart1.log  -d unimp  -serial tcp::12344,server,nowait -serial tcp::12345,server,nowait -monitor stdio -machine pebble-bb2  -cpu cortex-m3
+# Start qemu
+
+./qemu-system-arm   -serial file:uart1.log  -d unimp  -serial tcp::12344,server,nowait -serial tcp::12345,server,nowait -monitor stdio -machine rak811  -cpu cortex-m3
  -S -s  -pflash .pioenvs/rak811/firmware.bin
 
 
+# Start debubgger
+esport PATH=$PATH:~/.platformio/packages/toolchain-xtensa32/bin
+
+/home/olas/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gdb  .pioenvs/rak811/firmware.elf -ex ' target remote:1234'
 
 
     (gdb) target extended-remote localhost:1234
@@ -14,6 +21,12 @@ https://github.com/Ebiroll/qemu-xtensa-esp32
     (gdb) b main
     (gdb) b HAL_Init
 
+# Status
+It starts and gets giong, emulation is not ass good as for stm32f2xx
+The new files compared to the pebble emulation is called stm32l1xx
+
+It would be nice to get debug printouts, need to investigate
+   UART_WaitOnFlagUntilTimeout
 
 
 # Layout
@@ -100,7 +113,7 @@ https://github.com/Ebiroll/qemu-xtensa-esp32
 
 
 # From technical manual
-
+'''
 0xA000 0000 - 0xA000 0FFF FSMC
 0x5006 0000 - 0x5006 03FF AES Section 23.12.13: AES
 0x4002 6400 - 0x4002 67FF DMA2 Section 11.4.7: DMA register
@@ -149,7 +162,7 @@ map on page 694 0x4000 5400 - 0x4000 57FF I2C1
 0x4000 0800 - 0x4000 0BFF TIM4
 0x4000 0400 - 0x4000 07FF TIM3
 0x4000 0000 - 0x4000 03FF TIM2
-
+'''
 
 
 # Analysis
