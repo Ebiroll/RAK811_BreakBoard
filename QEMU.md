@@ -17,7 +17,10 @@ esport PATH=$PATH:~/.platformio/packages/toolchain-xtensa32/bin
 
 
     (gdb) target extended-remote localhost:1234
+    Press Ctrl-X then o
+    (gdb) layout next
     (gdb) b SystemInit
+    (gdb) monitor info mtree
     (gdb) b main
     (gdb) b HAL_Init
 

@@ -47,6 +47,10 @@ Now it starts and outputs debug information on UART,
     GpsGetLatestGpsPositionDouble ret = 0
 
 
+# Application information
+
+https://os.mbed.com/teams/Semtech/code/LoRaWAN-NAMote72-Application-Demo/
+
 # Qemu
 I have made a simple qemu board emulation and its possible to start and run in qemu,
 Read more here [running in qemu](./QEMU.md)
