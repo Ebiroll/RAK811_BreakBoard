@@ -34,15 +34,13 @@ It would be nice to get debug printouts, need to investigate
    (qemu) info mtree
    (gdb) monitor info mtree
 
-
-    00000000-ffffffffffffffff (prio 0, RW): system
-    00000000-00000000003fffff (prio 0, RW): alias stm32f2xx.flash.alias @f2xx.flash 0000000000000000-00000000003fffff
     08000000-083fffff (prio 0, R-): f2xx.flash
-    20000000-2001ffff (prio 0, RW): armv7m.sram
+    20000000-20007fff (prio 0, RW): armv7m.sram
     22000000-23ffffff (prio 0, RW): bitband
-    40000000-4000009f (prio 0, RW): tim 2
-    40000800-4000089f (prio 0, RW): tim 4
-    40000c00-40000c9f (prio 0, RW): tim 5
+    40000000-4000009f (prio 0, RW): tim
+    40000400-4000049f (prio 0, RW): tim
+    40000800-4000089f (prio 0, RW): tim
+    40000c00-40000c9f (prio 0, RW): tim
     40001000-4000109f (prio 0, RW): tim
     40001400-4000149f (prio 0, RW): tim
     40001800-4000189f (prio 0, RW): tim
@@ -64,8 +62,6 @@ It would be nice to get debug printouts, need to investigate
     40005800-40005bfe (prio 0, RW): i2c
     40005c00-40005ffe (prio 0, RW): i2c
     40006000-400063ff (prio 0, RW): dummy
-    40006400-400067ff (prio 0, RW): dummy
-    40006800-40006bff (prio 0, RW): dummy
     40006c00-40006fff (prio 0, RW): dummy
     40007000-40007007 (prio 0, RW): pwr
     40007400-400077ff (prio 0, RW): dummy
@@ -73,14 +69,13 @@ It would be nice to get debug printouts, need to investigate
     40008000-4000ffff (prio 0, RW): dummy
     40010000-400103ff (prio 0, RW): dummy
     40010400-400107ff (prio 0, RW): dummy
-    40011000-400113fe (prio 0, RW): uart
-    40011400-400117fe (prio 0, RW): uart
+    40010400-400107fe (prio 0, RW): exti
     40011800-40011fff (prio 0, RW): dummy
     40012000-400123ff (prio 0, RW): adc
     40012c00-40012fff (prio 0, RW): dummy
     40013000-400133fe (prio 0, RW): spi
+    40013800-40013bfe (prio 0, RW): uart
     40013800-40013bfe (prio 0, RW): syscfg
-    40013c00-40013ffe (prio 0, RW): exti
     40014000-4001409f (prio 0, RW): tim
     40014400-4001449f (prio 0, RW): tim
     40014800-4001489f (prio 0, RW): tim
@@ -100,68 +95,61 @@ It would be nice to get debug printouts, need to investigate
     42000000-43ffffff (prio 0, RW): bitband
     e000e000-e000efff (prio 0, RW): nvic
     e000e000-e000efff (prio 0, RW): nvic_sysregs
-    e000e100-e000ecff (prio 1, RW): alias nvic-gic 
-        @gic_dist 000    00100-00000cff
 
-    fffff000-00000000ffffffff (prio 0, RW): armv7m.hack
-
-
-
-
-    000000004002 3800-0000000040023bff (prio 0, RW): rcc
 
 
 
 # From technical manual
 ```
-0xA000 0000 - 0xA000 0FFF FSMC
-0x5006 0000 - 0x5006 03FF AES Section 23.12.13: AES
-0x4002 6400 - 0x4002 67FF DMA2 Section 11.4.7: DMA register
-0x4002 6000 - 0x4002 63FF DMA1 Section 11.4.7: DMA register
-0x4002 3C00 - 0x4002 3FFF FLASH Section 3.9.10: Register map
-0x4002 3800 - 0x4002 3BFF RCC 
-0x4002 3000 - 0x4002 33FF CRC Section 4.4.4: CRC register
-0x4002 1C00 - 0x4002 1FFF GPIOG
-0x4002 1800 - 0x4002 1BFF GPIOF
-0x4002 1400 - 0x4002 17FF GPIOH
-0x4002 1000 - 0x4002 13FF GPIOE
-0x4002 0C00 - 0x4002 0FFF GPIOD
-0x4002 0800 - 0x4002 0BFF GPIOC
-0x4002 0400 - 0x4002 07FF GPIOB
-0x4002 0000 - 0x4002 03FF GPIOA
-0x4001 3800 - 0x4001 3BFF USART1 APB2
-0x4001 3000 - 0x4001 33FF SPI1 Section 28.5.10: SPI register
-0x4001 2C00 - 0x4001 2FFF SDIO Section 29.9.16: SDIO
-0x4001 2400 - 0x4001 27FF ADC Section 12.15.21: ADC
-0x4001 1000 - 0x4001 13FF TIM11 Section 14.4.17: TIMx
-0x4001 0C00 - 0x4001 0FFF TIM10 Section 14.4.17: TIMx
-0x4001 0800 - 0x4001 0BFF TIM9 Section 14.4.17: TIMx
-0x4001 0400 - 0x4001 07FF EXTI Section 10.3.7: EXTI register
-0x4001 0000 - 0x4001 03FF SYSCFG Section 8.5.7: SYSCFG
-0x4000 7C00 - 0x4000 7C03 COMP APB1
-0x4000 7C04 - 0x4000 7C5B RI Section 8.5.7: SYSCFG
-0x4000 7C5C - 0x4000 7FFF OPAMP Section 15.4.4: OPAMP
-0x4000 7400 - 0x4000 77FF DAC Section 13.5.15: DAC
-0x4000 7000 - 0x4000 73FF PWR Section 5.4.3: PWR register
-0x4000 6000 - 0x4000 63FF USB device FS SRAM (512 bytes Section 24.5.4: USB register)
-0x4000 5C00 - 0x4000 5FFF USB device FS
-0x4000 5800 - 0x4000 5BFF I2C2 Section 26.6.10: I2C register
-map on page 694 0x4000 5400 - 0x4000 57FF I2C1
-0x4000 5000 - 0x4000 53FF USART5
-0x4000 4C00 - 0x4000 4FFF USART4
-0x4000 4800 - 0x4000 4BFF USART3
-0x4000 4400 - 0x4000 47FF USART2
-0x4000 3C00 - 0x4000 3FFF SPI3 Section 28.5.10: SPI register
-0x4000 3000 - 0x4000 33FF IWDG Section 21.4.5: IWDG
-0x4000 2C00 - 0x4000 2FFF WWDG Section 22.6.4: WWDG
-0x4000 2800 - 0x4000 2BFF RTC Section 20.6.21: RTC
-0x4000 2400 - 0x4000 27FF LCD Section 16.5.6: LCD register
-0x4000 1400 - 0x4000 17FF TIM7 Section 19.4.9: TIM6 and
-0x4000 1000 - 0x4000 13FF TIM6 page 507
-0x4000 0C00 - 0x4000 0FFF TIM5 (32-bits)
-0x4000 0800 - 0x4000 0BFF TIM4
-0x4000 0400 - 0x4000 07FF TIM3
-0x4000 0000 - 0x4000 03FF TIM2
+0xA0000000 - 0xA0000FFF FSMC
+0x50060000 - 0x500603FF AES Section 23.12.13: AES
+0x40026400 - 0x400267FF DMA2 Section 11.4.7: DMA register
+0x40026000 - 0x400263FF DMA1 Section 11.4.7: DMA register
+0x40023C00 - 0x40023FFF FLASH Section 3.9.10: Register map
+0x40023800 - 0x40023BFF RCC 
+0x40023000 - 0x400233FF CRC Section 4.4.4: CRC register
+0x40021C00 - 0x40021FFF GPIOG
+0x40021800 - 0x40021BFF GPIOF
+0x40021400 - 0x400217FF GPIOH
+0x40021000 - 0x400213FF GPIOE
+0x40020C00 - 0x40020FFF GPIOD
+0x40020800 - 0x40020BFF GPIOC
+0x40020400 - 0x400207FF GPIOB
+0x40020000 - 0x400203FF GPIOA
+0x40013800 - 0x40013BFF USART1 APB2
+0x40013000 - 0x400133FF SPI1 Section 28.5.10: SPI register
+0x40012C00 - 0x40012FFF SDIO Section 29.9.16: SDIO
+0x40012400 - 0x400127FF ADC Section 12.15.21: ADC
+0x40011000 - 0x400113FF TIM11 Section 14.4.17: TIMx
+0x40010C00 - 0x40010FFF TIM10 Section 14.4.17: TIMx
+0x40010800 - 0x40010BFF TIM9 Section 14.4.17: TIMx
+0x40010400 - 0x400107FF EXTI Section 10.3.7: EXTI register
+0x40010000 - 0x400103FF SYSCFG Section 8.5.7: SYSCFG
+0x40007C00 - 0x40007C03 COMP APB1
+0x40007C04 - 0x40007C5B RI Section 8.5.7: SYSCFG
+0x40007C5C - 0x40007FFF OPAMP Section 15.4.4: OPAMP
+0x40007400 - 0x400077FF DAC Section 13.5.15: DAC
+0x40007000 - 0x400073FF PWR Section 5.4.3: PWR register
+0x40006000 - 0x400063FF USB device FS SRAM (512 bytes Section 24.5.4: USB register)
+0x40005C00 - 0x40005FFF USB device FS
+0x40005800 - 0x40005BFF I2C2 Section 26.6.10: I2C register
+map on page 694 
+0x40005400 - 0x400057FF I2C1
+0x40005000 - 0x400053FF USART5
+0x40004C00 - 0x40004FFF USART4
+0x40004800 - 0x40004BFF USART3
+0x40004400 - 0x400047FF USART2
+0x40003C00 - 0x40003FFF SPI3 Section 28.5.10: SPI register
+0x40003000 - 0x400033FF IWDG Section 21.4.5: IWDG
+0x40002C00 - 0x40002FFF WWDG Section 22.6.4: WWDG
+0x40002800 - 0x40002BFF RTC Section 20.6.21: RTC
+0x40002400 - 0x400027FF LCD Section 16.5.6: LCD register
+0x40001400 - 0x400017FF TIM7 Section 19.4.9: TIM6 and
+0x40001000 - 0x400013FF TIM6 page 507
+0x40000C00 - 0x40000FFF TIM5 (32-bits)
+0x40000800 - 0x40000BFF TIM4
+0x40000400 - 0x400007FF TIM3
+0x40000000 - 0x400003FF TIM2
 ```
 
 
