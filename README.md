@@ -1,4 +1,4 @@
-# RAK811 breakout board
+ls# RAK811 breakout board
 
 Code from here 
 https://github.com/RAKWireless/RAK811_BreakBoard
@@ -69,6 +69,12 @@ Read more here [running in qemu](./QEMU.md)
 
 http://www.st.com/content/ccc/resource/technical/document/reference_manual/cc/f9/93/b2/f0/82/42/57/CD00240193.pdf/files/CD00240193.pdf/jcr:content/translations/en.CD00240193.pdf
 
+# Building with makefile,
+You can checkout the original files and use this makefile to build,
+https://raw.githubusercontent.com/oguiter/RAK811_BreakBoard/master/Makefile
+I did this and ran the generated elf files in qemu.
+Read more amout this experiment here,
+Read more here [running in parallell](./parallell_run.md)
 
 
 # Startup code
