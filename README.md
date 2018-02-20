@@ -31,7 +31,14 @@ If you do not have this directory, .platformio/platforms/ststm32 try,
 
 
 # To flash firmware with  stm32flash
-In stm32flash_src there is code to flash the device. Build with make
+
+You can use the platformio, it comes with stlinkv2
+Just move the BOOT strap one step, then
+
+    pio run --target upload
+
+
+Or if you want in stm32flash_src there is code to flash the device. Build with make
 
     ./stm32flash -w .pioenvs/rak811/firmware.bin  /dev/ttyUSB0
 To reset and start after download, try
@@ -45,6 +52,36 @@ Now it starts and outputs debug information on UART,
     [Debug]: tempr: 35 Bat: 3988mv
     [Debug]: ACC X:FF00 Y:0000 Z:FF00
     GpsGetLatestGpsPositionDouble ret = 0
+
+
+# Application information
+
+https://os.mbed.com/teams/Semtech/code/LoRaWAN-NAMote72-Application-Demo/
+
+# Qemu
+I have made a simple qemu board emulation and its possible to start and run in qemu,
+Read more here [running in qemu](./QEMU.md)
+
+# MCU information
+
+    Interface serial_posix: 57600 8E1
+    Version      : 0x31
+    Option 1     : 0x00
+    Option 2     : 0x00
+    Device ID    : 0x0429 (STM32L1xxx6(8/B)A)
+    - RAM        : 32KiB  (4096b reserved by bootloader)
+    - Flash      : 128KiB (size first sector: 16x256)
+    - Option RAM : 32b
+    - System RAM : 4KiB
+
+http://www.st.com/content/ccc/resource/technical/document/reference_manual/cc/f9/93/b2/f0/82/42/57/CD00240193.pdf/files/CD00240193.pdf/jcr:content/translations/en.CD00240193.pdf
+
+# Building with makefile,
+You can checkout the original files and use this makefile to build,
+https://raw.githubusercontent.com/oguiter/RAK811_BreakBoard/master/Makefile
+I did this and ran the generated elf files in qemu.
+Read more amout this experiment here,
+Read more here [running in parallell](./parallell_run.md)
 
 
 # Startup code
