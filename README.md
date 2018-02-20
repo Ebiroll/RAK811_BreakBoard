@@ -35,7 +35,7 @@ If you do not have this directory, .platformio/platforms/ststm32 try,
 You can use the platformio, it comes with stlinkv2
 Just move the BOOT strap one step, then
 
-    pio run --target upload
+    pio run --target upload --upload-port /dev/ttyUSB0
 
 
 Or if you want in stm32flash_src there is code to flash the device. Build with make
@@ -44,6 +44,14 @@ Or if you want in stm32flash_src there is code to flash the device. Build with m
 To reset and start after download, try
 
     ./stm32flash  -w .pioenvs/rak811/firmware.bin -v -g  0x0  /dev/ttyUSB0
+
+In linux, you can use this command to flash and capture output.
+    ./stm32flash  -w .pioenvs/rak811/firmware.bin -v -g  0x0  /dev/ttyUSB0 && pio device monitor --port  /dev/ttyUSB0 --baud 115200
+    ./stm32flash  -w .pioenvs/rak811/firmware.bin -v -g  0x0  /dev/ttyUSB0 && screen /dev/ttyUSB0 115200
+
+In windows, try something like this
+    pio run --target upload --upload-port COM15
+    stm32flash_src/stm32flash.exe -E -w .pioenvs/rak811/firmware.bin COM15    
 
 # Start
 Now it starts and outputs debug information on UART,
