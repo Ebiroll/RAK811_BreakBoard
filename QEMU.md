@@ -11,7 +11,7 @@ Instructions are available in readme.md
 
 
 # Start debubgger
-esport PATH=$PATH:~/.platformio/packages/toolchain-xtensa32/bin
+esport PATH=$PATH:~/.platformio/packages/toolchain-gccarmnoneeabi/bin/
 
 /home/olas/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gdb  .pioenvs/rak811/firmware.elf -ex ' target remote:1234'
 
@@ -27,6 +27,8 @@ esport PATH=$PATH:~/.platformio/packages/toolchain-xtensa32/bin
 # Status
 It starts and gets giong, emulation is not ass good as for stm32f2xx
 The new files compared to the pebble emulation is called stm32l1xx
+
+[compare makefile build with this](./parallell_run.md)
 
 It would be nice to get debug printouts, need to investigate
    UART_WaitOnFlagUntilTimeout

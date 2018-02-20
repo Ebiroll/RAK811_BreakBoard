@@ -29,7 +29,7 @@ Here is the code,
 
 
 
-
+```
 
 0x80123dc <__libc_init_array>           push   {r4, r5, r6, lr}                                                                                       │
    │0x80123de <__libc_init_array+2>         movs   r5, #0                                                                                                 │
@@ -47,3 +47,4 @@ Here is the code,
    │0x80123f8 <__libc_init_array+28>        asrs   r4, r4, #2                                                                                             │
    │0x80123fa <__libc_init_array+30>        cmp    r5, r4
 
+```
