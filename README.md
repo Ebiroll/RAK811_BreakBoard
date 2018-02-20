@@ -92,6 +92,16 @@ But instead
     .platformio/packages/framework-cmsis/variants/stm32l1/stm32l151xba/startup_stm32l151xba.S
 is used,
 
-Only difference is
+Only difference is that platformio has removed the call to __libc_init_array
     /*bl __libc_init_array*/ /* PlatformIO note: Will work without -nostartfiles */
-Probably not important
+
+Here you can read more about this,
+http://cs107e.github.io/guides/gcc/
+https://www.embedded.com/design/mcus-processors-and-socs/4026075/Building-Bare-Metal-ARM-Systems-with-GNU-Part-2
+
+The option -nostartfiles instructs the linker to not use the standard system startup functions nor link the code containing those functions.
+
+ The library function __libc_init_array invokes all C++ static constructors (see also the linker script).
+ As we do not have any static c++ constructors this should not be a problem, but could be something to think about.
+ If you patch the function to call , bl __libc_init_array then you might get an undefined reference to _init.
+ https://answers.launchpad.net/gcc-arm-embedded/+question/224709
