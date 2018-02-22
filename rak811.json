@@ -14,19 +14,20 @@
             ]
         ],
         "f_cpu": "32768000L",
-        "mcu": "stm32l151cbu6",
+        "mcu": "stm32l151cb",
         "variant": "stm32l151xba",
         "ldscript": "stm32l15xx6.ld"
     },
     "frameworks": [
         "mbed",
-        "cmsis"
+        "cmsis",
+	    "stm32cube"
     ],
     "name": "Rak811",
     "upload": {
         "maximum_ram_size": 32768,
         "maximum_size": 128000
     },
-    "url": "http://www.rakwireless.com/en/download/RAK811/Hardware%20Design",
+    "url": "http://www.rakwireless.com/en/download/RAK811%20Breakout%20Board/HardWare%20Design",
     "vendor": "RAK"
 }
