@@ -115,8 +115,8 @@ void BoardInitPeriph( void )
     //Init GPS
     GpsInit( );
 	
-	  //Init LIS3DH
-	  LIS3DH_Init( );
+	//Init LIS3DH
+	LIS3DH_Init( );
 
     // Switch LED 1, 2 OFF
     GpioWrite( &Led1, 1 );
@@ -293,8 +293,8 @@ static void BoardUnusedIoInit( void )
     HAL_DBGMCU_DisableDBGStopMode( );
     HAL_DBGMCU_DisableDBGStandbyMode( );
 
-    GpioInit( &ioPin, SWDIO, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &ioPin, SWCLK, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    //GpioInit( &ioPin, SWDIO, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    //GpioInit( &ioPin, SWCLK, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 #endif
 }
 
