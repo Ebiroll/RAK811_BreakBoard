@@ -6,12 +6,15 @@ Instructions are available in readme.md
 
 # Start qemu
 
-./qemu-system-arm   -serial file:uart1.log  -d unimp  -serial tcp::12344,server,nowait -serial tcp::12345,server,nowait -monitor stdio -machine rak811  -cpu cortex-m3
+    ./qemu-system-arm   -serial file:uart1.log  -d unimp  -serial tcp::12345,server,nowait -monitor stdio -machine rak811  -cpu cortex-m3
  -S -s  -pflash .pioenvs/rak811/firmware.bin
 
+# Monitor serial output
+    nc localhost 12345
 
-# Start debubgger
-esport PATH=$PATH:~/.platformio/packages/toolchain-gccarmnoneeabi/bin/
+
+# Start debugger
+export PATH=$PATH:~/.platformio/packages/toolchain-gccarmnoneeabi/bin/
 
 /home/olas/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gdb  .pioenvs/rak811/firmware.elf -ex ' target remote:1234'
 
@@ -24,8 +27,12 @@ esport PATH=$PATH:~/.platformio/packages/toolchain-gccarmnoneeabi/bin/
     (gdb) b main
     (gdb) b HAL_Init
 
+# Qemu with 2 uarts
+    ./qemu-system-arm  -s   -S  -d unimp  -serial tcp::12344,server,nowait  -serial tcp::12345,server,nowait -monitor stdio  -machine rak811 -cpu cortex-m3   -pflash  .pioenvs/rak811/firmware.bin
+
+
 # Status
-It starts and gets giong, emulation is not ass good as for stm32f2xx
+It starts and gets giong, emulation is not as good as for stm32f2xx
 The new files compared to the pebble emulation is called stm32l1xx
 
 [compare makefile build with this](./parallell_run.md)
