@@ -1,5 +1,7 @@
 # RAK811 breakout board
 
+Complete instructions here [running in windows](./WINDOWS.md)
+
 Code from here 
 https://github.com/RAKWireless/RAK811_BreakBoard
 then adapted to platformio
@@ -113,3 +115,8 @@ The option -nostartfiles instructs the linker to not use the standard system sta
  As we do not have any static c++ constructors this should not be a problem, but could be something to think about.
  If you patch the function to call , bl __libc_init_array then you might get an undefined reference to _init.
  https://answers.launchpad.net/gcc-arm-embedded/+question/224709
+
+# Blackmagic Single Wire Debug
+
+Allows flashing over wifi and single step the code with gdb
+https://github.com/Ebiroll/esp32_blackmagic
