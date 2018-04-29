@@ -116,6 +116,26 @@ The option -nostartfiles instructs the linker to not use the standard system sta
  If you patch the function to call , bl __libc_init_array then you might get an undefined reference to _init.
  https://answers.launchpad.net/gcc-arm-embedded/+question/224709
 
+# BME280 i2c drivers
+
+To use these you must 
+    #include "OBME280.h"
+
+    // After MCUInit()
+    i2c_bme280_begin();
+
+    float temp=i2c_bme280_read_temp();
+    float pressure=i2c_bme280_read_pressure();
+    float rh=i2c_bme280_read_rh();
+    printf("RH %2f Temp %2f , pressure %2f\r\n",rh,temp,pressure);
+
+To force new readings you should use,
+    i2c_bme280_force_readings();
+
+Note that this uses the same i2c as the MEMS sensor. The 3 
+bottom pins is GND, SCL, SDA
+
+
 # Blackmagic Single Wire Debug
 
 Allows flashing over wifi and single step the code with gdb

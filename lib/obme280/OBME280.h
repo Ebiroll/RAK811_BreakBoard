@@ -2,6 +2,12 @@
 #ifndef __BME280_H__
 #define __BME280_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "stdint.h"
 
 
@@ -204,5 +210,8 @@ FOR POWER MODE  */
 
 
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
