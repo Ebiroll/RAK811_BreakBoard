@@ -12,13 +12,15 @@ The earlier versions of the board only had 16K ram so stm32l15xx6.ld is default 
 If you want to use the full 32K ram you can change this line before copy
         "ldscript": "/home/olof/rak/STM32L151XBA_FLASH.ld"
 
+Note, This step is not necessary as we have added boards_dir = . to platformio.ini
+
 If you use, platformio ide, press
 
     1) Home button
     2) Platforms/ST STM32 reveal button
 
 ![instruction](instruction.png)
-
+    
 
     cp rak811.json ~/.platformio/platforms/ststm32/boards/rak811.json
 

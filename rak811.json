@@ -21,6 +21,7 @@
     "frameworks": [
         "mbed",
         "cmsis",
+        "libopencm3",
 	    "stm32cube"
     ],
     "name": "Rak811",
