@@ -48,6 +48,7 @@ typedef u8_t LIS3DH_IntPinConf_t;
 typedef u8_t LIS3DH_Axis_t;
 typedef u8_t LIS3DH_Int1Conf_t;
 #define LIS3DH_FULLSCALE LIS3DH_FULLSCALE_4
+#define LIS3DH_ODR_FREQ     LIS3DH_ODR_10Hz
 
 #define LIS3DH_READBIT                (0x80)
 #define LIS3DH_MSBIT                (0x40)
@@ -505,6 +506,14 @@ typedef enum {
 
 #endif /*__SHARED__MACROS*/
 
+typedef struct {
+    int16_t  acc_x;
+    int16_t  acc_y;
+    int16_t  acc_z;
+    bool     detected;
+}LIS3DH_ACC_DATA;
+
+extern LIS3DH_ACC_DATA acc_data;
 /* Exported functions --------------------------------------------------------*/
 //Sensor Configuration Functions
 status_t LIS3DH_SetODR(LIS3DH_ODR_t ov);

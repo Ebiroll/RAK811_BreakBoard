@@ -61,4 +61,5 @@ void GpsMcuProcess( void );
  */
 void GpsMcuIrqNotify( UartNotifyId_t id );
 
+bool GpsMcuIsEnable(void);
 #endif  // __GPS_BOARD_H__

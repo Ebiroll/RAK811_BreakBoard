@@ -28,7 +28,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 #include "board.h"
 
 #define FIFO_STREAM_MODE
-#define LIS3DH_ODR_FREQ     LIS3DH_ODR_10Hz
+//#define LIS3DH_ODR_FREQ     LIS3DH_ODR_10Hz
 
 #define ASSERT(_cond_)
 
@@ -85,12 +85,28 @@ void Lis3dh_Event( void )
 	 IntDetected = true;
 }
 
+LIS3DH_ACC_DATA acc_data = {0};
 void Lis3dh_IntEventClear( void )
 {
-  u8_t src;
+    u8_t src = 0;
+    int8_t buf[6] = {0};
+    int index;
 
-  LIS3DH_GetInt1Src(&src);
-  printf("Move Detected INT1 src:0x%02x\r\n", src); 
+    LIS3DH_GetInt1Src(&src);
+//    printf("Move Detected INT1 src:0x%02x\r\n", src);
+		
+    for ( index = 0; index < 6; index++) {
+    	LIS3DH_ReadReg(LIS3DH_OUT_X_L + index, buf + index);
+    	DelayMs(2);
+    }
+
+	acc_data.acc_x = buf[1] * 16;
+	acc_data.acc_y = buf[3] * 16;
+	acc_data.acc_z = buf[5] * 16;
+        acc_data.detected = true;
+	printf("ACC X:%dmg Y:%dmg Z:%dmg\r\n",
+			acc_data.acc_x, acc_data.acc_y,acc_data.acc_z);
+    return;
 }
 
 uint8_t Lis3dhGetIntState( void )
@@ -110,7 +126,9 @@ uint8_t Lis3dhGetIntState( void )
 uint8_t LIS3DH_Init(void)
 {
   uint8_t whoami;
-  
+  int8_t buf[6] = {0};
+  int index;
+
 	I2cInit( &Lis3dh_i2c, I2C_SCL, I2C_SDA );
   
   GpioInit( &Lis3dh_int1, LIS3DH_INT1_PIN, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
@@ -119,16 +137,19 @@ uint8_t LIS3DH_Init(void)
     
   DelayMs(10);
   
-  /*¶ÁÈ¡WHO_AM_IÅÐ¶ÏLIS3DHÊÇ·ñ´æÔÚ */
-  LIS3DH_ReadReg(LIS3DH_WHO_AM_I,&whoami);  
-  if(whoami != 0x33)
-  {
-     printf("LIS3DH is not found!\r\n"); 
-     return 0;
+  /*  */
+  int times=0;
+  while (times++<10) {
+    LIS3DH_ReadReg(LIS3DH_WHO_AM_I,&whoami);  
+    if(whoami != 0x33)
+    {
+      printf("LIS3DH is not found!\r\n"); 
+      //return 0;
+    }
   }
-  
+
   // Enable Temp
-  LIS3DH_SetTemperature(MEMS_ENABLE);
+  LIS3DH_SetTemperature(MEMS_DISABLE);
   // ODR = 100 Hz and enable X, Y, and Z
   LIS3DH_SetODR(LIS3DH_ODR_FREQ);
   LIS3DH_SetAxis(LIS3DH_X_ENABLE | LIS3DH_Y_ENABLE | LIS3DH_Z_ENABLE);
@@ -155,7 +176,9 @@ uint8_t LIS3DH_Init(void)
   LIS3DH_SetIntConfiguration(LIS3DH_INT1_ZHIE_ENABLE | LIS3DH_INT1_ZLIE_ENABLE |
                              LIS3DH_INT1_YHIE_ENABLE | LIS3DH_INT1_YLIE_ENABLE | 
                              LIS3DH_INT1_XHIE_ENABLE | LIS3DH_INT1_XLIE_ENABLE);
-  
+  printf("LIS3DH init success!\r\n");
+
+   Lis3dh_IntEventClear();
 #ifdef FIFO_STREAM_MODE
   //LIS3DH_FIFOModeEnable(LIS3DH_FIFO_STREAM_MODE);
 #else
