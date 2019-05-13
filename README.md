@@ -137,8 +137,40 @@ To force new readings you should use,
 Note that this uses the same i2c as the MEMS sensor. The 3 
 bottom pins is GND, SCL, SDA
 
+# Logging in linux
+    screen /dev/ttyUSB0 115200
+
 
 # Blackmagic Single Wire Debug
 
 Allows flashing over wifi and single step the code with gdb
 https://github.com/Ebiroll/esp32_blackmagic
+
+
+    arm-none-eabi-gdb .pioenvs/rak811/firmware.elf
+    (gdb) target  extended-remote 192.168.1.117:2345
+    (gdb) monitor swdp_scan
+
+
+
+
+# Wis Node 
+
+It is possible to run this code on the Wis Node. (RAK5205)
+http://docs.rakwireless.com/en/LoRa/WisTrio-LoRa-RAK5205/Hardware_Specification/RAK5205_Product_Brief_V1.1.pdf
+
+On the 30 Pin connector for 96 boards,
+
+Pin out No | Pin name | Desc
+-----| ----- | ------
+9-10 | GND	|  GND  
+17 | SWED_TMS	|  SWD_DATA  
+18 | SWD_CLK	|  SWD_CLK
+
+
+    arm-none-eabi-gdb .pioenvs/rak811/firmware.elf -ex 'target  extended-remote 192.168.1.117:2345'
+    (gdb) monitor swdp_scan
+    (gdb) attach 1
+    (gdb) load
+    (gdb) b main
+    (gdb) c
