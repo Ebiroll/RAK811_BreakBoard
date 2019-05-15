@@ -142,12 +142,15 @@ int8_t BME680_read( int16_t * temprature, uint32_t * pressure, uint32_t * humidi
     *pressure = data.pressure;
     *humidity = data.humidity;
     
-    printf("T: %.2f degC, P: %.2f hPa, H %.2f %%rH ", data.temperature / 100.0f,
-        data.pressure / 100.0f, data.humidity / 1000.0f );
+    //printf("T: %.2f degC, P: %.2f hPa, H %.2f %%rH ", data.temperature / 100.0f,
+    //    data.pressure / 100.0f, data.humidity / 1000.0f );
+    printf("T: %d degC, P: %d hPa, H %d rH ", *temprature / 100,
+        *pressure / 100, *humidity / 1000 );
     /* Avoid using measurements from an unstable heating setup */
     if(data.status & BME680_GASM_VALID_MSK){
-        printf(", G: %d ohms", data.gas_resistance);
+        //e_printf(", G: %d ohms", data.gas_resistance);
         *resistance = data.gas_resistance;
+        printf(", G: %d ohms", *resistance);
     }
     
     printf("\r\n");
