@@ -479,7 +479,7 @@ float i2c_bme280_read_pressure( void )
 	// Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
 	int32_t adc_P = ((uint32_t)i2c_bme280_read_register(BME280_PRESSURE_MSB_REG) << 12) | ((uint32_t)i2c_bme280_read_register(BME280_PRESSURE_LSB_REG) << 4) | ((i2c_bme280_read_register(BME280_PRESSURE_XLSB_REG) >> 4) & 0x0F);
 	
-    printf("hPA %d,%d\n",adc_P,adc_P/256);
+    printf("hPA %d,%d\n",(int)adc_P,(int)adc_P/256);
 
 	int64_t var1, var2, p_acc;
 	var1 = ((int64_t)t_fine) - 128000;

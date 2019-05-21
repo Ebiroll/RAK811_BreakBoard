@@ -88,7 +88,7 @@ LIS3DH_ACC_DATA acc_data = {0};
 void Lis3dh_IntEventClear( void )
 {
     u8_t src = 0;
-    int8_t buf[6] = {0};
+    uint8_t buf[6] = {0};
     int index;
 
     LIS3DH_GetInt1Src(&src);
@@ -125,8 +125,8 @@ uint8_t Lis3dhGetIntState( void )
 uint8_t LIS3DH_Init(void)
 {
   uint8_t whoami;
-  int8_t buf[6] = {0};
-  int index;
+  //int8_t buf[6] = {0};
+  //int index;
 
   
   GpioInit( &Lis3dh_int1, LIS3DH_INT1_PIN, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
