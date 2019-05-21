@@ -35,15 +35,23 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include "stm32l151xb.h"
 #include "stm32l1xx_ll_rcc.h"
 #include "stm32l1xx_ll_utils.h"
 #include "stm32l1xx_ll_system.h"
+#include "system_stm32l1xx.h"
 #include "stm32l1xx_ll_pwr.h"
 #ifdef  USE_FULL_ASSERT
 #include "stm32_assert.h"
 #else
 #define assert_param(expr) ((void)0U)
 #endif
+
+
+extern const uint8_t AHBPrescTable[16];   /*!< AHB prescalers table values */
+extern const uint8_t APBPrescTable[8];    /*!< APB prescalers table values */
+extern const uint8_t PLLMulTable[9];      /*!< PLL multipiers table values */
+
 
 /** @addtogroup STM32L1xx_LL_Driver
   * @{

@@ -138,7 +138,7 @@ int8_t bme680_self_test(struct bme680_dev *dev)
 
 					rslt = bme680_get_sensor_data(&data[i], &t_dev);
 
-					e_printf("##SELF-TEST T: %.2f degC, P: %.2f hPa, H %.2f %%rH ", data[i].temperature / 100.0f,
+					printf("##SELF-TEST T: %.2f degC, P: %.2f hPa, H %.2f %%rH ", data[i].temperature / 100.0f,
                                 data[i].pressure / 100.0f, data[i].humidity / 1000.0f );
 				}
 			}

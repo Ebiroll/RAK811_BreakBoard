@@ -77,6 +77,15 @@ extern "C" {
 /* Max delay can be used in LL_mDelay */
 #define LL_MAX_DELAY                  (uint32_t)0xFFFFFFFFU
 
+// Previously in stm32l151xb
+#ifndef UID_BASE
+#define UID_BASE              ((uint32_t)0x1FF80050U)        /*!< Unique device ID register base address for Cat.1 and Cat.2 devices */
+#endif
+
+#ifndef FLASHSIZE_BASE
+#define FLASHSIZE_BASE        ((uint32_t)0x1FF8004CU)        /*!< FLASH Size register base address for Cat.1 and Cat.2 devices */
+#endif
+
 /**
  * @brief Unique device ID register base address
  */
