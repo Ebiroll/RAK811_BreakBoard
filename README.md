@@ -152,11 +152,17 @@ https://github.com/Ebiroll/esp32_blackmagic
     (gdb) monitor swdp_scan
 
 
+# swo trace with black magic esp32
 
+Tracing was added 
+The directory swo and the file .gdbinit contains setup possibility
+    (gdb) monitor traceswo
 
-# Wis Node 
+# Vis Trio Node 
 
-It is possible to run this code on the Wis Node. (RAK5205)
+This is the default board to build for, change default env in platform.ini
+
+It is possible to run this code on the WisTrio. (RAK5205)
 http://docs.rakwireless.com/en/LoRa/WisTrio-LoRa-RAK5205/Hardware_Specification/RAK5205_Product_Brief_V1.1.pdf
 
 On the 30 Pin connector for 96 boards,
@@ -168,7 +174,7 @@ Pin out No | Pin name | Desc
 18 | SWD_CLK	|  SWD_CLK
 
 
-    arm-none-eabi-gdb .pioenvs/rak811/firmware.elf -ex 'target  extended-remote 192.168.1.117:2345'
+    arm-none-eabi-gdb .pioenvs/wistrio/firmware.elf -ex 'target  extended-remote 192.168.1.117:2345'
     (gdb) monitor swdp_scan
     (gdb) attach 1
     (gdb) load

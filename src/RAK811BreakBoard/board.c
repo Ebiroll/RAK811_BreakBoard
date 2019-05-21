@@ -13,7 +13,9 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 Maintainer: Miguel Luis and Gregory Cristian
 */
 #include "board.h"
-
+#include "stm32l1xx_hal_iwdg.h"
+#include "BME680-board.h"
+#include "BME680-selftest.h"
 /*!
  * Unique Devices IDs register set ( STM32L1xxx )
  */
@@ -117,6 +119,10 @@ void BoardInitPeriph( void )
 	
 	//Init LIS3DH
 	LIS3DH_Init( );
+#ifdef WISTRIO 
+        SWO_PrintString("BME680_Init\n");
+        BME680_Init( );
+#endif
 
     // Switch LED 1, 2 OFF
     GpioWrite( &Led1, 1 );
@@ -156,6 +162,8 @@ void BoardInitMcu( void )
     SX1276IoInit( );
     GpioInit( &SX1276.Xtal, RADIO_XTAL_EN, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
 		
+    I2cInit( &I2c, I2C_SCL, I2C_SDA );
+
     if( McuInitialized == false )
     {
         McuInitialized = true;

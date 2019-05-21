@@ -32,7 +32,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 #define ASSERT(_cond_)
 
-I2c_t   Lis3dh_i2c;
 Gpio_t  Lis3dh_int1;
 Gpio_t  Lis3dh_int2;
 
@@ -52,7 +51,7 @@ bool LIS3DH_ReadReg(uint8_t Reg, uint8_t* Data)
   uint8_t Read_Reg = Reg | LIS3DH_READBIT;
   //uint8_t Read_Reg = Reg ;
 	
-  ret = I2cReadBuffer( &Lis3dh_i2c, 0x32, Read_Reg, Data, 1 );
+  ret = I2cReadBuffer( &I2c, 0x32, Read_Reg, Data, 1 );
   if (ret !=SUCCESS) {
     printf("LIS3DH no ack\r\n");
   }
@@ -72,7 +71,7 @@ u8_t LIS3DH_WriteReg(uint8_t WriteAddr, uint8_t Data)
 {
   int ret;
   
-  ret = I2cWriteBuffer( &Lis3dh_i2c, 0x32, WriteAddr, (uint8_t *)&Data, 1 );   
+  ret = I2cWriteBuffer( &I2c, 0x32, WriteAddr, (uint8_t *)&Data, 1 );   
   if (ret !=SUCCESS) {
     printf("LIS3DH no ack\r\n");
   }
@@ -93,7 +92,7 @@ void Lis3dh_IntEventClear( void )
     int index;
 
     LIS3DH_GetInt1Src(&src);
-//    printf("Move Detected INT1 src:0x%02x\r\n", src);
+//    e_printf("Move Detected INT1 src:0x%02x\r\n", src);
 		
     for ( index = 0; index < 6; index++) {
     	LIS3DH_ReadReg(LIS3DH_OUT_X_L + index, buf + index);
@@ -103,7 +102,7 @@ void Lis3dh_IntEventClear( void )
 	acc_data.acc_x = buf[1] * 16;
 	acc_data.acc_y = buf[3] * 16;
 	acc_data.acc_z = buf[5] * 16;
-        acc_data.detected = true;
+  acc_data.detected = true;
 	printf("ACC X:%dmg Y:%dmg Z:%dmg\r\n",
 			acc_data.acc_x, acc_data.acc_y,acc_data.acc_z);
     return;
@@ -129,7 +128,6 @@ uint8_t LIS3DH_Init(void)
   int8_t buf[6] = {0};
   int index;
 
-	I2cInit( &Lis3dh_i2c, I2C_SCL, I2C_SDA );
   
   GpioInit( &Lis3dh_int1, LIS3DH_INT1_PIN, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
   GpioInit( &Lis3dh_int2, LIS3DH_INT2_PIN, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
@@ -137,15 +135,12 @@ uint8_t LIS3DH_Init(void)
     
   DelayMs(10);
   
-  /*  */
-  int times=0;
-  while (times++<10) {
-    LIS3DH_ReadReg(LIS3DH_WHO_AM_I,&whoami);  
-    if(whoami != 0x33)
-    {
-      printf("LIS3DH is not found!\r\n"); 
-      //return 0;
-    }
+  /*¶ÁÈ¡WHO_AM_IÅÐ¶ÏLIS3DHÊÇ·ñ´æÔÚ */
+  LIS3DH_ReadReg(LIS3DH_WHO_AM_I,&whoami);  
+  if(whoami != 0x33)
+  {
+     printf("LIS3DH is not found!\r\n"); 
+     return 0;
   }
 
   // Enable Temp

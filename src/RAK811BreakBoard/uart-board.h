@@ -92,5 +92,6 @@ uint8_t UartMcuGetChar( Uart_t *obj, uint8_t *data );
  * \retval status    [0: OK, 1: Busy]
  */
 uint8_t UartMcuGetBuffer( Uart_t *obj, uint8_t *data, uint16_t size );
+void UartFlush( Uart_t *obj);
 
 #endif // __UART_MCU_H__

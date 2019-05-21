@@ -18,7 +18,7 @@ Maintainer: Miguel Luis and Gregory Cristian
  * FIFO buffers size
  */
 //#define FIFO_TX_SIZE                                128
-#define FIFO_RX_SIZE                                512
+#define FIFO_RX_SIZE                                128
 
 //uint8_t TxBuffer[FIFO_TX_SIZE];
 /*
@@ -30,7 +30,7 @@ void GpsGNSSGpsOnlyFrame( uint8_t * buffer, uint16_t * size );
 /*!
  * \brief Buffer holding the  raw data received from the gps
  */
-uint8_t NmeaString[512];
+uint8_t NmeaString[128];
 
 /*!
  * \brief Maximum number of data byte that we will accept from the GPS
@@ -360,7 +360,7 @@ void GpsMcuIrqNotify( UartNotifyId_t id )
     { 	
         if( UartMcuGetChar( &GpsUart, &data ) == 0 )
         {
-            if( ( data == '$' ) || ( NmeaStringSize >= 1024 ) )
+            if( ( data == '$' ) || ( NmeaStringSize >= 127 ) )
             {
                 NmeaStringSize = 0;
             }

@@ -338,6 +338,28 @@ void USART3_IRQHandler( void )
   }
 #endif	
 	
+#if 0
+#define MAX_MSG_LEN 256
+
+static char ll_msg_buf_[MAX_MSG_LEN];
+
+void e_printf(const char *format, ...)
+{
+    int i;
+    va_list args;
+    size_t len;
+    
+    /* Format the string */
+    va_start(args, format);
+    len = vsnprintf(ll_msg_buf_, MAX_MSG_LEN, &format[0], args);
+    va_end(args);
+    HAL_UART_Transmit(&UartContext[UART_1].UartHandle, (uint8_t *)&ll_msg_buf_, len, 0xFFFF);
+}
+
+int e_printf_raw(const char *buffer, int size)
+{
+    HAL_UART_Transmit(&UartContext[UART_1].UartHandle, (uint8_t *)buffer, size, 0xFFFF);
+}
 int e_getchar(void)
 {
     int c = -1;
@@ -348,9 +370,11 @@ int e_getchar(void)
     } 
     return c;
 }
+#endif
 
 int e_printchar(char ch)
 {
+    
 	HAL_UART_Transmit(&UartContext[UART_1].UartHandle, (uint8_t *)&ch, 1, 0xFFFF);
 }
 
