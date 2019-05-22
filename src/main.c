@@ -23,6 +23,72 @@
 #include "Region.h"
 #include "Commissioning.h"
 
+
+void GPIOIRQ_Enable(void)
+{
+	HAL_NVIC_EnableIRQ( EXTI0_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI1_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI2_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI3_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI4_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI9_5_IRQn );
+	HAL_NVIC_EnableIRQ( EXTI15_10_IRQn );
+}
+
+static void lora_sleep(int argc, char *argv[])
+{
+   
+        DelayMs(10);
+        
+        SX1276SetSleep();
+        SX1276Write(REG_OPMODE,SX1276Read(REG_OPMODE)& 0xF8);
+          
+        __HAL_RCC_RTC_DISABLE();
+        
+        __HAL_RCC_LSE_CONFIG(RCC_LSE_OFF);
+
+          
+        BoardDeInitMcu();
+        SysEnterUltraPowerStopMode();
+        BoardInitMcu();
+        
+        __HAL_RCC_LSE_CONFIG(RCC_LSE_ON);
+        
+        __HAL_RCC_RTC_ENABLE();
+
+        SX127X_INIT();
+			
+		GPIOIRQ_Enable();
+        
+        //rw_LoadUsrConfig(); 
+        // at log
+        //lora_recv(LORA_EVENT_WAKEUP, 0, 0, NULL);
+        
+        UartFlush(&Uart1);
+        
+}
+
+void enter_sleep()
+{    
+        __HAL_RCC_RTC_DISABLE();
+        
+        __HAL_RCC_LSE_CONFIG(RCC_LSE_OFF);
+        
+        BoardDeInitMcu();
+        SysEnterUltraPowerStopMode();
+        BoardInitMcu();
+        
+        __HAL_RCC_LSE_CONFIG(RCC_LSE_ON);
+        
+        __HAL_RCC_RTC_ENABLE();
+
+		// at log
+        //lora_recv(LORA_EVENT_WAKEUP, 0, 0, NULL);
+        
+        UartFlush(&Uart1);     
+}
+
+
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
  */

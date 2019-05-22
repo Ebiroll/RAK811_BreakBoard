@@ -40,6 +40,8 @@ Uart_t GpsUart;
 Uart_t UartUsb;
 #endif
 
+IWDG_HandleTypeDef hiwdg;
+
 /*!
  * Initializes the unused GPIO to a know status
  */
@@ -90,6 +92,7 @@ static void OnCalibrateSystemWakeupTimeTimerEvent( void )
  */
 static uint8_t IrqNestLevel = 0;
 
+uint8_t g_power_source = BATTERY_POWER;
 void BoardDisableIrq( void )
 {
     __disable_irq( );
@@ -181,12 +184,33 @@ void BoardDeInitMcu( void )
     AdcDeInit( &Adc );
 
     SpiDeInit( &SX1276.Spi );
+    I2cDeInit(&I2c);
     SX1276IoDeInit( );
 
     //GpioInit( &ioPin, OSC_LSE_IN, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
     //GpioInit( &ioPin, OSC_LSE_OUT, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 	
 	  GpioWrite( &SX1276.Xtal, 0 );
+	UartDeInit(&GpsUart);
+  	UartDeInit(&Uart1);
+}
+
+void BoardHiwdogInit( void ){
+
+	hiwdg.Instance = IWDG;
+	hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
+	hiwdg.Init.Reload = 0xFFF;
+
+	HAL_IWDG_Init(&hiwdg);
+	
+	HAL_IWDG_Start(&hiwdg);
+
+	return;
+}
+
+void BoardHIWDGRefresh( void ){
+	HAL_IWDG_Refresh(&hiwdg);
+	return;
 }
 
 uint32_t BoardGetRandomSeed( void )
@@ -375,10 +399,10 @@ void SystemClockReConfig( void )
     {
     }
 
-    /* Select HSI as system clock source */
+    /* Select HSI  (PLL) as system clock source */
     __HAL_RCC_SYSCLK_CONFIG ( RCC_SYSCLKSOURCE_HSI );
 
-    /* Wait till HSI is used as system clock source */
+    /* Wait till HSI (PLL) is used as system clock source */
     while( __HAL_RCC_GET_SYSCLK_SOURCE( ) != RCC_SYSCLKSOURCE_STATUS_HSI )
     {
     }
@@ -395,6 +419,95 @@ uint8_t GetBoardPowerSource( void )
     return USB_POWER;  // USB_POWER BATTERY_POWER
 }
 
+// From newer boar.c
+void InstallWakeUpPin(void)
+{
+    uint32_t temp;
+    uint32_t iocurrent;
+    /* Enable SYSCFG Clock */
+    __HAL_RCC_SYSCFG_CLK_ENABLE();
+    
+    iocurrent = (GPIO_PIN_10) & ((uint32_t)1 << 10);
+    temp = SYSCFG->EXTICR[10 >> 2];
+    CLEAR_BIT(temp, ((uint32_t)0x0F) << (4 * (10 & 0x03)));
+    SET_BIT(temp, (GPIO_GET_INDEX(GPIOA)) << (4 * (10 & 0x03)));
+    SYSCFG->EXTICR[10 >> 2] = temp;
+    
+    /* Clear EXTI line configuration */
+    temp = EXTI->IMR;
+    CLEAR_BIT(temp, (uint32_t)iocurrent);
+    
+    SET_BIT(temp, iocurrent); 
+    
+    EXTI->IMR = temp;
+    
+    temp = EXTI->EMR;
+    CLEAR_BIT(temp, (uint32_t)iocurrent);      
+
+    EXTI->EMR = temp;
+    
+    /* Clear Rising Falling edge configuration */
+    temp = EXTI->RTSR;
+    CLEAR_BIT(temp, (uint32_t)iocurrent); 
+    
+    SET_BIT(temp, iocurrent); 
+    
+    EXTI->RTSR = temp;
+    
+    temp = EXTI->FTSR;
+    CLEAR_BIT(temp, (uint32_t)iocurrent); 
+    
+    SET_BIT(temp, iocurrent); 
+    
+    EXTI->FTSR = temp;
+}
+
+void UninstallWakeUpPin(void)
+{
+    uint32_t tmp = SYSCFG->EXTICR[10 >> 2];
+    uint32_t iocurrent = (GPIO_PIN_10) & ((uint32_t)1 << 10);
+    
+    tmp &= (((uint32_t)0x0F) << (4 * (10 & 0x03)));
+    if(tmp == (GPIO_GET_INDEX(GPIOA) << (4 * (10 & 0x03))))
+    {
+        tmp = ((uint32_t)0x0F) << (4 * (10 & 0x03));
+        CLEAR_BIT(SYSCFG->EXTICR[10 >> 2], tmp); 
+        /* Clear EXTI line configuration */
+        CLEAR_BIT(EXTI->IMR, (uint32_t)iocurrent);
+        CLEAR_BIT(EXTI->EMR, (uint32_t)iocurrent);
+        /* Clear Rising Falling edge configuration */
+        CLEAR_BIT(EXTI->RTSR, (uint32_t)iocurrent);
+        CLEAR_BIT(EXTI->FTSR, (uint32_t)iocurrent);        
+    } 
+}
+
+void SysEnterUltraPowerStopMode( void )
+{
+    InstallWakeUpPin();
+    
+    
+    // Disable the Power Voltage Detector
+    HAL_PWR_DisablePVD( );
+    
+    SET_BIT( PWR->CR, PWR_CR_CWUF );
+    
+    // Enable Ultra low power mode
+    HAL_PWREx_EnableUltraLowPower( );
+    
+    // Enable the fast wake up from Ultra low power mode
+    HAL_PWREx_EnableFastWakeUp( );
+    
+    // Enter Stop Mode
+    HAL_PWR_EnterSTOPMode( PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI );
+
+    __HAL_PWR_CLEAR_FLAG( PWR_FLAG_WU );
+    
+    SystemClockReConfig();
+
+    UninstallWakeUpPin();
+    
+    GpioWrite( &SX1276.Xtal, 1 );
+}
 #ifdef USE_FULL_ASSERT
 /*
  * Function Name  : assert_failed
