@@ -38,6 +38,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "rtc-board.h"
 #include "sx1276-board.h"
 #include "uart-board.h"
+#include "swo.h"
 
 #if defined( USE_USB_CDC )
 #include "uart-usb-board.h"
