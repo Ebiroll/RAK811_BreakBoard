@@ -25,7 +25,7 @@
          "stm32cube"
     ],
     "upload": {
-      "maximum_ram_size": 16384,
+      "maximum_ram_size": 32768,
        "maximum_size": 131072,
       "protocol": ""
     },
