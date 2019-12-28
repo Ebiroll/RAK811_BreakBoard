@@ -22,13 +22,14 @@
         "mbed",
         "cmsis",
         "libopencm3",
-	    "stm32cube"
+         "stm32cube"
     ],
-    "name": "Rak811",
     "upload": {
-        "maximum_ram_size": 32768,
-        "maximum_size": 128000
+      "maximum_ram_size": 16384,
+       "maximum_size": 131072,
+      "protocol": ""
     },
+    "name": "Rak811",
     "url": "http://www.rakwireless.com/en/download/RAK811%20Breakout%20Board/HardWare%20Design",
     "vendor": "RAK"
 }
